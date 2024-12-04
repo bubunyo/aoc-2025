@@ -34,60 +34,9 @@ func run2(fp string) any {
 		safe := true
 		dampCount := 0
 
-		for i := 1; i < len(report); i++ {
-			curr, err := strconv.Atoi(report[i])
+		for dampCount <= 1 && safe {
 
-			if err != nil {
-				log.Fatalln("strconv:", err)
-			}
-
-			if curr == prev {
-				dampCount++
-				if dampCount > 1 {
-					safe = false
-					break
-				}
-				continue
-			}
-
-			if level == 0 {
-				if curr > prev {
-					level = 1 // increasing
-				} else {
-					level = -1 // decreasing
-				}
-			}
-
-			var amt int
-			if level > 0 {
-				amt = curr - prev
-			} else {
-				amt = prev - curr
-			}
-
-			if amt <= 0 || amt > 3 {
-				dampCount++
-				if dampCount > 1 {
-					safe = false
-					break
-				}
-				level = 0
-				continue
-			}
-			prev = curr
-		}
-		if !safe {
-			prev, err := strconv.Atoi(report[len(report)-1])
-			if err != nil {
-				log.Fatalln("strconv:", err)
-			}
-
-			level = 0 // 0 for unset,  1 for increasing, -1 for decreasing
-
-			safe = true
-			dampCount = 0
-
-			for i := len(report) - 2; i >= 0; i-- {
+			for i := 1; i < len(report); i++ {
 				curr, err := strconv.Atoi(report[i])
 
 				if err != nil {
@@ -100,10 +49,12 @@ func run2(fp string) any {
 						safe = false
 						break
 					}
-					continue
+					i = i - 1
+					report = append(report[:i], report[i+1:]...)
+					break
 				}
 
-				if level == 0 {
+				if i == 1 {
 					if curr > prev {
 						level = 1 // increasing
 					} else {
@@ -124,8 +75,9 @@ func run2(fp string) any {
 						safe = false
 						break
 					}
-					level = 0
-					continue
+					i = i - 1
+					report = append(report[:i], report[i+1:]...)
+					break
 				}
 				prev = curr
 			}
