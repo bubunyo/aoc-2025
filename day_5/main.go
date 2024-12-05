@@ -13,8 +13,8 @@ const prefix = "day_5"
 
 func main() {
 	prefix := "Day 1:"
-	// fmt.Println(prefix, "Demo 1-", run_("input_demo"))
-	// fmt.Println(prefix, "Run 1 ->", run_("input"))
+	fmt.Println(prefix, "Demo 1-", run_("input_demo"))
+	fmt.Println(prefix, "Run 1 ->", run_("input"))
 	fmt.Println(prefix, "Demo 2 ->", run2("input_demo"))
 	fmt.Println(prefix, "Run 2 ->", run2("input"))
 }
